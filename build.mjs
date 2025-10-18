@@ -62,8 +62,8 @@ function mathCompiler({ outDir="dist", imgDir="assets", rasterWidth=null } = {})
       const pngPath = path.join(eqDir, `${base}.png`);
 
       const alt = node.value.replace(/\s+/g," ").trim();
-      const svgSrc = path.posix.join(imgDir, `${base}.svg`);
-      const pngSrc = path.posix.join(imgDir, `${base}.png`);
+      const svgSrc = `./${path.posix.join(imgDir, `${base}.svg`)}`;
+      const pngSrc = `./${path.posix.join(imgDir, `${base}.png`)}`;
       const chosenSrc = rasterWidth ? pngSrc : svgSrc;
       const imgHTML = isDisplay
         ? `<p><img src="${chosenSrc}" alt="${alt}" /></p>`
