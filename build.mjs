@@ -34,6 +34,15 @@ function hash(s){ return crypto.createHash("sha1").update(s).digest("hex").slice
 async function texToSVG(texSrc, display=false) {
   const node = mj.convert(texSrc, { display });
   let svg = adaptor.outerHTML(node);               // <svg>…</svg>
+  const start = svg.indexOf("<svg");
+  if (start >= 0) {
+    const end = svg.indexOf("</svg>", start);
+    if (end >= 0) {
+      svg = svg.slice(start, end + "</svg>".length);
+    } else {
+      svg = svg.slice(start);
+    }
+  }
   // Improve readability on light/dark backgrounds
   svg = svg.replace("<svg", '<svg shape-rendering="geometricPrecision"');
   return svg;
