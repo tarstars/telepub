@@ -76,10 +76,17 @@ function mathCompiler({ outDir="dist", imgDir="assets", rasterWidth=null, assetB
       const pngSrc = `${normalizedBase}${path.posix.join(imgDir, `${base}.png`)}`;
       const chosenSrc = rasterWidth ? pngSrc : svgSrc;
       const imgHTML = isDisplay
-        ? `<p><img src="${chosenSrc}" alt="${alt}" /></p>`
-        : `<img src="${chosenSrc}" alt="${alt}" />`;
+        ? `<figure class="eq"><img src="${chosenSrc}" alt="${alt}"/></figure>`
+        : alt;
 
-      parent.children[index] = { type: "html", value: imgHTML };
+      if (isDisplay) {
+        parent.children[index] = { type: "html", value: imgHTML };
+      } else {
+        parent.children[index] = {
+          type: "text",
+          value: `${imgHTML}`
+        };
+      }
 
       tasks.push((async () => {
         const svg = await texToSVG(node.value, isDisplay);
