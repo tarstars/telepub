@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "preview": "node build.mjs article.md \"My Math Article\" null dist public && node scripts/open-local.mjs",
+    "open:remote": "node scripts/open-remote.mjs"
   },
   "keywords": [],
   "author": "",

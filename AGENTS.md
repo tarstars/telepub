@@ -21,6 +21,8 @@
 - `npm install` prepares dependencies; use Node.js 20 or newer.
 - `node build.mjs article.md "My Math Article"` renders Markdown to static HTML with inline SVG equations.
 - `node build.mjs article.md "My Math Article" 1600` adds PNG rasterization for clients that prefer bitmaps; adjust width as needed.
+- `npm run preview` rebuilds the article for local review and opens `dist/index.html` in your default browser.
+- `npm run open:remote` launches the published GitHub Pages URL (`https://tarstars.github.io/telepub/`) in your default browser.
 - `npm test` is a placeholder today. When you add checks, document them here and keep the script green before opening a pull request.
 - Manual verification: open `dist/index.html` in a browser to confirm layout, equation rendering, and asset paths.
 
