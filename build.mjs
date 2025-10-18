@@ -36,8 +36,6 @@ async function texToSVG(texSrc, display=false) {
   let svg = adaptor.outerHTML(node);               // <svg>…</svg>
   // Improve readability on light/dark backgrounds
   svg = svg.replace("<svg", '<svg shape-rendering="geometricPrecision"');
-  // Optional: add faint outline for dark themes
-  svg = svg.replace(/<g /, '<g stroke="white" stroke-width="0.6" ');
   return svg;
 }
 
