@@ -26,6 +26,11 @@
 - `npm test` is a placeholder today. When you add checks, document them here and keep the script green before opening a pull request.
 - Manual verification: open `dist/index.html` in a browser to confirm layout, equation rendering, and asset paths.
 
+## Telegram Instant View
+- All math (inline + block) renders to `<img>` elements; block equations live in `<figure class="eq">`.
+- Use `iv-template.yml` as your IV template seed. It maps the article body and captures both block `figure.eq` images and inline `.eq-inline` images.
+- After deploying to GitHub Pages, revalidate Instant View with your template and clear cache if equations appear stale (append `?v=<timestamp>` to the URL).
+
 ## Coding Style & Naming Conventions
 - Stick to modern ESM, two-space indentation, and camelCase identifiers in JavaScript.
 - Break complex logic into small helpers; add short comments when intent may be unclear.

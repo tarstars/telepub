@@ -1,0 +1,10 @@
+~version: "2.1"
+?domain: tarstars.github.io
+?path: ^/telepub/
+
+title: //article/h1[1]
+body:  //article
+paragraph: //article//p
+image:
+  //article//figure[@class="eq"]/img
+  | //article//img[@class="eq-inline"]
