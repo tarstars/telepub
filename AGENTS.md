@@ -21,6 +21,8 @@
 - `npm install` prepares dependencies; use Node.js 20 or newer.
 - `node build.mjs article.md "My Math Article"` renders Markdown to static HTML with inline SVG equations.
 - `node build.mjs article.md "My Math Article" 1600` adds PNG rasterization for clients that prefer bitmaps; adjust width as needed.
+- `PUBLIC_URL=https://tarstars.github.io/telepub/ node build.mjs article.md "Forging the Algorithm" 1600` embeds absolute OG metadata and emits both SVG + PNG assets for link previews.
+- Copy a 1200×630 preview to `dist/assets/cover.png` (for example, `cp dist/assets/eq-<hash>.png dist/assets/cover.png` and resize with `sharp dist/assets/cover.png --resize 1200 630`). Rebuild or rerun the copy whenever you change the hero image.
 - `npm run preview` rebuilds the article for local review and opens `dist/index.html` in your default browser.
 - `npm run open:remote` launches the published GitHub Pages URL (`https://tarstars.github.io/telepub/`) in your default browser.
 - `npm test` is a placeholder today. When you add checks, document them here and keep the script green before opening a pull request.

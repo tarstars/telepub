@@ -113,10 +113,25 @@ async function build(mdPath, { title="Article", outDir="dist", rasterWidth=null,
 
   const htmlBody = String(await processor.process(md));
 
+  const PUBLIC_URL = (process.env.PUBLIC_URL || "").replace(/\/?$/, "/");
+  const plainText = htmlBody.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  const description = plainText.slice(0, 180);
+  const ogImage = PUBLIC_URL ? new URL("assets/cover.png", PUBLIC_URL).href : "";
+  const ogBlock = `
+<meta property="og:title" content="${title}">
+<meta property="og:description" content="${description}">
+<meta property="og:type" content="article">
+${PUBLIC_URL ? `<meta property="og:url" content="${PUBLIC_URL}">` : ""}
+${ogImage ? `<meta property="og:image" content="${ogImage}">` : ""}
+<meta name="twitter:card" content="${ogImage ? "summary_large_image" : "summary"}">
+${ogImage ? `<meta name="twitter:image" content="${ogImage}">` : ""}
+`;
+
   const html = `<!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title}</title>
+${ogBlock}
 </head><body>
 <article>
 <h1>${title}</h1>
