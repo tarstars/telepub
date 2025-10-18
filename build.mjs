@@ -77,7 +77,7 @@ function mathCompiler({ outDir="dist", imgDir="assets", rasterWidth=null, assetB
       const chosenSrc = rasterWidth ? pngSrc : svgSrc;
       const imgHTML = isDisplay
         ? `<figure class="eq"><img src="${chosenSrc}" alt="${alt}" data-tex="${alt}"/></figure>`
-        : `<img class="eq-inline" src="${chosenSrc}" alt="${alt}" data-tex="${alt}"/>`;
+        : `<span class="eq-inline"><img src="${chosenSrc}" alt="${alt}" data-tex="${alt}"/></span>`;
 
       parent.children[index] = { type: "html", value: imgHTML };
 
