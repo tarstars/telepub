@@ -90,7 +90,7 @@ function mathCompiler({ outDir="dist", imgDir="assets", rasterWidth=null } = {})
   };
 }
 
-async function build(mdPath, { title="Article", outDir="dist", rasterWidth=null } = {}) {
+async function build(mdPath, { title="Article", outDir="dist", rasterWidth=null, publicDir="public" } = {}) {
   const md = await fs.readFile(mdPath, "utf8");
   const processor = unified()
     .use(remarkParse)
@@ -116,9 +116,20 @@ ${htmlBody}
 
   await fs.ensureDir(outDir);
   await fs.writeFile(path.join(outDir, "index.html"), html);
+
+  if (publicDir) {
+    const publicOut = path.join(publicDir);
+    const publicAssets = path.join(publicOut, "assets");
+    await fs.ensureDir(publicOut);
+    await fs.copy(path.join(outDir, "index.html"), path.join(publicOut, "index.html"));
+    await fs.ensureDir(publicAssets);
+    await fs.copy(path.join(outDir, "assets"), publicAssets, { overwrite: true });
+  }
 }
 
 const mdFile = process.argv[2] || "article.md";
 const title = process.argv[3] || "My Math Article";
 const raster = process.argv[4] ? Number(process.argv[4]) : null; // e.g. 1600
-build(mdFile, { title, rasterWidth: raster }).then(()=>console.log("Built."));
+const outDir = process.argv[5] || "dist";
+const publicDir = process.argv[6] || "public";
+build(mdFile, { title, rasterWidth: raster, outDir, publicDir }).then(()=>console.log("Built."));
