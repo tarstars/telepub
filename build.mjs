@@ -45,7 +45,7 @@ async function svgToPNG(svgString, widthPx) {
   return await sharp(Buffer.from(svgString)).resize({ width: widthPx }).png().toBuffer();
 }
 
-function mathCompiler({ outDir="dist", imgDir="assets", rasterWidth=null } = {}) {
+function mathCompiler({ outDir="dist", imgDir="assets", rasterWidth=null, assetBase="" } = {}) {
   const eqDir = path.join(outDir, imgDir);
   fs.ensureDirSync(eqDir);
 
@@ -62,8 +62,11 @@ function mathCompiler({ outDir="dist", imgDir="assets", rasterWidth=null } = {})
       const pngPath = path.join(eqDir, `${base}.png`);
 
       const alt = node.value.replace(/\s+/g," ").trim();
-      const svgSrc = `./${path.posix.join(imgDir, `${base}.svg`)}`;
-      const pngSrc = `./${path.posix.join(imgDir, `${base}.png`)}`;
+      const normalizedBase = assetBase
+        ? assetBase.replace(/\/?$/, "/")
+        : "";
+      const svgSrc = `${normalizedBase}${path.posix.join(imgDir, `${base}.svg`)}`;
+      const pngSrc = `${normalizedBase}${path.posix.join(imgDir, `${base}.png`)}`;
       const chosenSrc = rasterWidth ? pngSrc : svgSrc;
       const imgHTML = isDisplay
         ? `<p><img src="${chosenSrc}" alt="${alt}" /></p>`
@@ -90,13 +93,13 @@ function mathCompiler({ outDir="dist", imgDir="assets", rasterWidth=null } = {})
   };
 }
 
-async function build(mdPath, { title="Article", outDir="dist", rasterWidth=null, publicDir="public" } = {}) {
+async function build(mdPath, { title="Article", outDir="dist", rasterWidth=null, publicDir="public", assetBase="" } = {}) {
   const md = await fs.readFile(mdPath, "utf8");
   const processor = unified()
     .use(remarkParse)
     .use(remarkGfm)
     .use(remarkMath)
-    .use(mathCompiler, { outDir, imgDir:"assets", rasterWidth })
+    .use(mathCompiler, { outDir, imgDir:"assets", rasterWidth, assetBase })
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeRaw)
     .use(rehypeStringify, { allowDangerousHtml: true });
@@ -132,4 +135,5 @@ const title = process.argv[3] || "My Math Article";
 const raster = process.argv[4] ? Number(process.argv[4]) : null; // e.g. 1600
 const outDir = process.argv[5] || "dist";
 const publicDir = process.argv[6] || "public";
-build(mdFile, { title, rasterWidth: raster, outDir, publicDir }).then(()=>console.log("Built."));
+const assetBase = process.argv[7] || "";
+build(mdFile, { title, rasterWidth: raster, outDir, publicDir, assetBase }).then(()=>console.log("Built."));
