@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forging the Algorithm</title>
+
+<meta property="og:title" content="Forging the Algorithm">
+<meta property="og:description" content="Here’s a lightly edited version with the same meaning: Forging the Algorithm Arseniy Backstory In earlier posts I talked about my time at Equifax, where I encountered instability i">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://tarstars.github.io/telepub/">
+<meta property="og:image" content="https://tarstars.github.io/telepub/assets/s1.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://tarstars.github.io/telepub/assets/s1.png">
+
+</head><body>
+<article>
+<h1>Forging the Algorithm</h1>
+<p>Here’s a lightly edited version with the same meaning:</p>
+<hr>
+<p><strong>Forging the Algorithm</strong>
+Arseniy</p>
+<p><strong>Backstory</strong></p>
+<p>In earlier posts I talked about my time at Equifax, where I encountered instability in credit-scoring models. I outlined the main ideas behind feature engineering and target construction for this task, and I wrote the largest PL/SQL script I’ve ever written.</p>
+<p><strong>Forging an Algorithm</strong></p>
+<p>After a while I joined HeadHunter. Things stabilized and the work began. Two or three times a week, after a full day at the office, I would travel from Alekseevskaya to Park Kultury in Moscow (about 45 minutes). There, my friend and I worked on gradient-boosted decision trees with extrapolation. We started by deriving the standard gradient-boosted decision-trees algorithm.</p>
+<p>The core procedure is splitting. Let’s unpack it step by step. First, we need to choose a loss function to minimize. Suppose our model produces a score <span class="eq-inline" style="display:inline-block;height:1.1em;vertical-align:middle;">
+  <img src="assets/s2.png" alt="s_i" data-tex="s_i" style="height:100%;display:block;" />
+</span> for object <span class="eq-inline" style="display:inline-block;height:1.1em;vertical-align:middle;">
+  <img src="assets/s3.png" alt="i" data-tex="i" style="height:100%;display:block;" />
+</span> whose true label is <span class="eq-inline" style="display:inline-block;height:1.1em;vertical-align:middle;">
+  <img src="assets/s4.png" alt="y_i" data-tex="y_i" style="height:100%;display:block;" />
+</span>. The loss for this object is <span class="eq-inline" style="display:inline-block;height:1.1em;vertical-align:middle;">
+  <img src="assets/s5.png" alt="l(s_i, y_i)" data-tex="l(s_i, y_i)" style="height:100%;display:block;" />
+</span>, and the total loss is <span class="eq-inline" style="display:inline-block;height:1.1em;vertical-align:middle;">
+  <img src="assets/s6.png" alt="L=\sum_{i=1}^{n} l(s_i, y_i)" data-tex="L=\sum_{i=1}^{n} l(s_i, y_i)" style="height:100%;display:block;" />
+</span>.</p>
+<figure class="eq" style="text-align:center;margin:1.5em 0;">
+  <img src="assets/s7.png" alt="\mathcal{L}(\theta) = \sum_{i=1}^{n} l(s_\theta(x_i), y_i)" data-tex="\mathcal{L}(\theta) = \sum_{i=1}^{n} l(s_\theta(x_i), y_i)" style="max-width:100%;height:auto;" />
+  <figcaption style="font-size:0.85em;color:#666;margin-top:0.5em;">\mathcal{L}(\theta) = \sum_{i=1}^{n} l(s_\theta(x_i), y_i)</figcaption>
+</figure>
+</article>
+</body></html>

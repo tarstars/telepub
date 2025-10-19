@@ -4,25 +4,40 @@
 <title>Forging the Algorithm</title>
 
 <meta property="og:title" content="Forging the Algorithm">
-<meta property="og:description" content="Here’s a lightly edited version with the same meaning: Forging the Algorithm Arseniy Backstory In earlier posts I talked about my time at Equifax, where I encountered instability i">
+<meta property="og:description" content="Arseniy Backstory In earlier posts I talked about my time at Equifax, where I encountered instability in credit-scoring models. I outlined the main ideas behind feature engineering">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://tarstars.github.io/telepub/">
-<meta property="og:image" content="https://tarstars.github.io/telepub/assets/cover.png">
+<meta property="og:url" content="https://tarstars.github.io/telepub/good_looking/">
+<meta property="og:image" content="https://tarstars.github.io/telepub/good_looking/assets/cover.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://tarstars.github.io/telepub/assets/cover.png">
+<meta name="twitter:image" content="https://tarstars.github.io/telepub/good_looking/assets/cover.png">
 
 </head><body>
 <article>
 <h1>Forging the Algorithm</h1>
-<p>Here’s a lightly edited version with the same meaning:</p>
-<hr>
-<p><strong>Forging the Algorithm</strong>
-Arseniy</p>
-<p><strong>Backstory</strong></p>
+<p><em>Arseniy</em></p>
+<h2>Backstory</h2>
 <p>In earlier posts I talked about my time at Equifax, where I encountered instability in credit-scoring models. I outlined the main ideas behind feature engineering and target construction for this task, and I wrote the largest PL/SQL script I’ve ever written.</p>
-<p><strong>Forging an Algorithm</strong></p>
+<h2>Forging an Algorithm</h2>
 <p>After a while I joined HeadHunter. Things stabilized and the work began. Two or three times a week, after a full day at the office, I would travel from Alekseevskaya to Park Kultury in Moscow (about 45 minutes). There, my friend and I worked on gradient-boosted decision trees with extrapolation. We started by deriving the standard gradient-boosted decision-trees algorithm.</p>
-<p>The core procedure is splitting. Let’s unpack it step by step. First, we need to choose a loss function to minimize. Suppose our model produces a score <span class="eq-inline"><img src="assets/eq-1476244d6bcc.png" alt="s_i" data-tex="s_i"></span> for object <span class="eq-inline"><img src="assets/eq-042dc4512fa3.png" alt="i" data-tex="i"></span> whose true label is <span class="eq-inline"><img src="assets/eq-35c2ac2f82d0.png" alt="y_i" data-tex="y_i"></span>. The loss for this object is <span class="eq-inline"><img src="assets/eq-224b1efe0122.png" alt="l(s_i, y_i)" data-tex="l(s_i, y_i)"></span>, and the total loss is <span class="eq-inline"><img src="assets/eq-1fb382745a7c.png" alt="L=\sum_{i=1}^{n} l(s_i, y_i)" data-tex="L=\sum_{i=1}^{n} l(s_i, y_i)"></span>.</p>
-<figure class="eq"><img src="assets/eq-4df71b1494e2.png" alt="\mathcal{L}(\theta) = \sum_{i=1}^{n} l(s_\theta(x_i), y_i)" data-tex="\mathcal{L}(\theta) = \sum_{i=1}^{n} l(s_\theta(x_i), y_i)"></figure>
+<p>The core procedure is splitting. Let’s unpack it step by step. First, we need to choose a loss function to minimize.</p>
+<figure class="eq-line">
+  <img src="./assets/line-sentence1_v314.png" alt="Suppose our model produces a score s_i for object i whose true label is y_i.">
+</figure>
+<p>Now we have a set of records. Each record contains a factor and a target. For the whole dataset we can calculate the result of our inference - mean value of target and it minimize MSE and Logloss. Then we can try to split our dataset into two parts, so we can infer value for the one part and for the another separately. It gives one more degree of freedom and allows to make our loss lower. Gain is the difference between out loss on initial dataset and the sum of losses over two splitted datasets.</p>
+<figure class="eq-line">
+  <img src="./assets/line-loss_v314.png" alt="The loss for this object is l(s_i,y_i), and the total loss is L = sum l(s_i,y_i).">
+</figure>
+<p>In order to solve this problem for a generic loss function, one can use Tailor approximation and the fact that the inference value is one for the whole dataset.</p>
+<figure class="eq-illustration">
+  <img src="./assets/parabolic-minimum_v314.webp" alt="Quadratic approximation of the loss surface">
+</figure>
+<p>The key expression x0 = (l') / (l'') is surprisingly simple. It means that we can make Newton's step toward the minimum, and really it's a second-order method.</p>
+<p>Now for each split we can calculate loss defect and find the split with the best defect value. There is one more interesting trick here: it's convenient to sort each factor by its value and move through these values incrementally updating loss defect. And, basically, that is it. Vanilla GBDT in a nutshell.</p>
+<p>Of course, there are some interesting things to discuss later: multithreading, contemporary standards on GBDT trees building, truncating policies, regularizations. But as idea, it's all you need to remember:</p>
+<ul>
+<li>make splits by factors</li>
+<li>find the optimal split using loss defect expression</li>
+<li>repeat recursively to build a tree</li>
+</ul>
 </article>
 </body></html>

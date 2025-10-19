@@ -37,6 +37,8 @@
 - Stick to modern ESM, two-space indentation, and camelCase identifiers in JavaScript.
 - Break complex logic into small helpers; add short comments when intent may be unclear.
 - Generated media should follow the existing `eq-<hash>.svg|png` pattern and live under `dist/assets/`.
+- Instant View rule: never let `<img>` tags remain inside `<p>` elements. Wrap math or media in `<figure>`/`<span>` wrappers or restructure the Markdown so the renderer emits block elements.
+- When referencing image assets in `article.md`, keep filenames slugged (no spaces, lowercase, optional version suffix like `_v314`) and ensure the build/publish paths stay consistent so IV fetches them correctly.
 
 ## Testing Guidelines
 - No automated suite exists yet; contributions that affect rendering should add at least a smoke build to `npm test` (e.g., run the build and assert key files exist).
