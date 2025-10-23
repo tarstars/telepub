@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to find linear superposition in chaos</title>
+</head>
+<body>
+<article>
+<figure class="illustration">
+  <img src="https://tarstars.github.io/telepub/extra_boost/assets/extra_boost_wide_range.png" alt="Extra Boost with wide-range approximation curve" />
+</figure>
+<h1>How to find linear superposition in chaos</h1>
+<p>Now we have a set of points which, while fairly random from a mathematical point of view, give us a depiction of the “Extra Boost” sign. For my method, I need to find several groups, each represented by a linear combination of basis functions. I set time \(t\) to go from left to right, from 0 to 1. The basis functions are \([1,\, t,\, \sin(kt),\, \cos(kt)]\), so the extrapolating function is</p>
+<figure class="eq-block">
+  <img src="https://tarstars.github.io/telepub/extra_boost/assets/extra-boost-eq.png" alt="f(t) = A + B t + C · sin(kt) + D · cos(kt)" />
+</figure>
+<p>Weights \(A,B,C,D\) can be estimated from the dataset using least squares, but we still need to pick \(k\). After a set of experiments I chose \(k=50\): it gives a convenient scale—the wavelength is roughly the width of a letter.</p>
+<p>With this setup I obtained the picture you see at the beginning of the article. Then I decided the tolerance was too large and reduced the band width.</p>
+<p>Here we are: a narrow band.</p>
+<figure class="illustration">
+  <img src="https://tarstars.github.io/telepub/extra_boost/assets/extra_boost_narrow_range.png" alt="Extra Boost with narrow-range approximation curve" />
+</figure>
+<p>Next, I removed points within the tolerance range and repeated the process. To my surprise, after the first iteration nothing changed.</p>
+<figure class="illustration">
+  <img src="https://tarstars.github.io/telepub/extra_boost/assets/extra_boost_narrow_range_first_iteration.png" alt="First iteration after removing in-tolerance points" />
+</figure>
+<p>You can see that the dots disappeared, but the curve didn’t change. After a while I understood why. It was vibe-coding: I asked my iron friend to find a curve that captures the highest number of points; instead, it wrote code that <strong>minimizes MSE</strong>. That approach has an interesting property: when you delete points lying on the curve, the MSE is unchanged, so the same curve remains optimal.</p>
+<p>I told the iron friend that, instead of minimizing squared distance to the points, it should <strong>maximize the number of captured points</strong>. It proposed the <strong>RANSAC</strong> approach, which was new to me: repeatedly select four random points, fit the curve, count captured points, and keep the candidate with the most inliers. It worked.</p>
+<figure class="illustration">
+  <img src="https://tarstars.github.io/telepub/extra_boost/assets/extra_boost_narrow_range_second_iteration.png" alt="Second iteration: RANSAC-based capture" />
+</figure>
+<p>I ran the process iteratively, and it decomposed the figure into a superposition of functions. Unfortunately, the upper half of “B” wasn’t captured. I suspected the issue was the different heights of lowercase and uppercase letters and created a second version of the drawing.</p>
+<figure class="illustration">
+  <img src="https://tarstars.github.io/telepub/extra_boost/assets/extra_boost_all_capital.webp" alt="All-caps version of Extra Boost sign" />
+</figure>
+<p>The same procedure gave me the sign decomposed into <strong>eight</strong> components, each a superposition of the basis functions.</p>
+<figure class="illustration">
+  <img src="https://tarstars.github.io/telepub/extra_boost/assets/extra_boost_all_capitals_decomposed.png" alt="Decomposition into 8 components" />
+</figure>
+<p>Finally, I encoded the group number as a 0–1 vector of static features \(f<em>1,f</em>2,f_3\) and exported the dataset as CSV. Hooray — now we have data to test the <strong>MSE mode</strong> of the EXTRA BOOST model.</p>
+</article>
+</body>
+</html>
